@@ -1,41 +1,59 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 interface SubjectCardProps {
   name: string;
   unattendedClasses: number;
   attendancePercent: number;
   absenceLimit: number;
-  graphImageUri: string;
-  warningImageUri: string;
 }
+
+const TOTAL_HOURS = 45;
 
 const SubjectCard: React.FC<SubjectCardProps> = ({
   name,
   unattendedClasses,
   attendancePercent,
   absenceLimit,
-  graphImageUri,
-  warningImageUri
 }) => {
+  const [unattended, setUnattended] = useState(unattendedClasses);
+  const [attendance, setAttendance] = useState(attendancePercent);
+  const [limit, setLimit] = useState(absenceLimit);
+
+  const handleIncrease = () => {
+    if (unattended < TOTAL_HOURS) {
+      const newUnattended = unattended + 1;
+      setUnattended(newUnattended);
+      setAttendance(((TOTAL_HOURS - newUnattended) / TOTAL_HOURS) * 100);
+      setLimit(limit - 1);
+    } 
+  };
+
+  const handleDecrease = () => {
+    if (unattended > 0) {
+      const newUnattended = unattended - 1;
+      setUnattended(newUnattended);
+      setAttendance(((TOTAL_HOURS - newUnattended) / TOTAL_HOURS) * 100);
+      setLimit(limit + 1);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.subjectName}>{name}</Text>
-          <Text style={styles.infoText}>Classes unattended: {unattendedClasses}</Text>
-          <Text style={styles.infoText}>Attendance percent: {attendancePercent}%</Text>
-          <Text style={styles.infoText}>Absence limit: {absenceLimit}</Text>
+          <Text style={styles.infoText}>Classes unattended: {unattended}</Text>
+          <Text style={styles.infoText}>Attendance percent: {attendance.toFixed(2)}%</Text>
+          <Text style={styles.infoText}>Absence limit: {limit}</Text>
         </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: graphImageUri }}
-            style={styles.graphImage}
-          />
-          <Image
-            source={{ uri: warningImageUri }}
-            style={styles.warningImage}
-          />
+        <View style={styles.symbolContainer}>
+          <TouchableOpacity onPress={handleDecrease}>
+            <Text style={styles.symbolText}>-</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleIncrease}>
+            <Text style={styles.symbolText}>+</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -60,10 +78,11 @@ const styles = {
   textContainer: {
     flex: 1,
   },
-  imageContainer: {
+  symbolContainer: {
+    flexDirection: 'row' as const,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
-    gap: 8,
+    gap: 30, // Increased gap value
   },
   subjectName: {
     fontSize: 18,
@@ -75,15 +94,9 @@ const styles = {
     color: '#666',
     marginBottom: 4,
   },
-  graphImage: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain' as const,
-  },
-  warningImage: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain' as const,
+  symbolText: {
+    fontSize: 30,
+    fontWeight: 'bold' as const,
   },
 };
 
