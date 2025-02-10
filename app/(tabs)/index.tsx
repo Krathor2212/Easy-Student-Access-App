@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Portals from './Portals'; // Ensure this is the correct path to your Portals component
 import AttendanceScreen from './AttendanceScreen'; // Ensure this is the correct path to your AttendanceScreen component
+import CGPACalculator from "./CGPACalculator";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -12,6 +13,7 @@ const App = () => {
       <Drawer.Navigator>
         <Drawer.Screen name="Portals" component={Portals} />
         <Drawer.Screen name="Attendance Tracker" component={AttendanceScreen} />
+        <Drawer.Screen name="CGPA Calculator" component={CGPACalculator} />
       </Drawer.Navigator>
   );
 };
