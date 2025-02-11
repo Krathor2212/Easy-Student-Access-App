@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import SubjectCard from './SubjectCard';
 
 const AttendanceScreen = () => {
+  const [selectedSemester, setSelectedSemester] = useState('1');
+
   const subjects = [
     {
       id: 1,
@@ -44,7 +47,20 @@ const AttendanceScreen = () => {
             }}
             style={{ width: 24, height: 24, marginRight: 8 }}
           />
-          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Attendance Tracker</Text>
+            <Picker
+            selectedValue={selectedSemester}
+            style={{ height: 60, width: 200 }}
+            onValueChange={(itemValue) => setSelectedSemester(itemValue)}
+            >
+            <Picker.Item label="Semester 1" value="1" />
+            <Picker.Item label="Semester 2" value="2" />
+            <Picker.Item label="Semester 3" value="3" />
+            <Picker.Item label="Semester 4" value="4" />
+            <Picker.Item label="Semester 5" value="5" />
+            <Picker.Item label="Semester 6" value="6" />
+            <Picker.Item label="Semester 7" value="7" />
+            <Picker.Item label="Semester 8" value="8" />
+            </Picker>
         </View>
         
         <View style={{ gap: 16 }}>

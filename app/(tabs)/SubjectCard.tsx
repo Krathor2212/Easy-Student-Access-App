@@ -43,9 +43,9 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
       <View style={styles.infoContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.subjectName}>{name}</Text>
-          <Text style={styles.infoText}>Classes unattended: {unattended}</Text>
-          <Text style={styles.infoText}>Attendance percent: {attendance.toFixed(2)}%</Text>
-          <Text style={styles.infoText}>Absence limit: {limit}</Text>
+          <Text style={styles.infoText}>Classes Missed: {unattended}</Text>
+          <Text style={styles.infoText}>Attendance : {attendance.toFixed(2)}%</Text>
+          <Text style={styles.infoText}>Skips Left: {limit}</Text>
         </View>
         <View style={styles.symbolContainer}>
           <TouchableOpacity onPress={handleDecrease}>
