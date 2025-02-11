@@ -5,6 +5,9 @@ import SubjectCard from './SubjectCard';
 
 const AttendanceScreen = () => {
   const [selectedSemester, setSelectedSemester] = useState('1');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [departments, setDepartments] = useState<string[]>([]);
+  
   interface Subject {
     id: number;
     name: string;
@@ -17,26 +20,59 @@ const AttendanceScreen = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
   useEffect(() => {
-    const fetchSubjects = async () => {
+    const fetchDepartments = async () => {
       try {
-        const response = await fetch(`http://10.16.49.151:5000/subjects?sem_offered=${selectedSemester}`);
+        const response = await fetch('http://10.16.49.151:5000/departments');
         const data = await response.json();
-        const formattedSubjects = data.map((subject: any, index: number) => ({
-          id: index + 1,
-          name: subject.subject_name,
-          unattendedClasses: 0,
-          attendancePercent: 100,
-          total_hrs: subject.no_of_hours,
-          absenceLimit: Math.floor(subject.no_of_hours * 0.25)
-        }));
-        setSubjects(formattedSubjects);
+        if (data && Array.isArray(data.departments)) {
+          setDepartments(data.departments);
+        } else {
+          console.error('Unexpected data format for departments:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!selectedSemester || !selectedDepartment) {
+        console.log('Selected semester or department is missing:', { selectedSemester, selectedDepartment });
+        return;
+      }
+
+      const encodedSemester = encodeURIComponent(selectedSemester);
+      const encodedDepartment = encodeURIComponent(selectedDepartment);
+      const url = `http://10.16.49.151:5000/subjects?department=${encodedDepartment}&semester=${encodedSemester}`;
+      console.log('Fetching subjects with URL:', url);
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Fetched subjects data:', data);
+        if (Array.isArray(data)) {
+          const formattedSubjects = data.map((subject: any, index: number) => ({
+            id: index + 1,
+            name: subject.subject_name,
+            unattendedClasses: 0,
+            attendancePercent: 100,
+            total_hrs: subject.no_of_hours,
+            absenceLimit: Math.floor(subject.no_of_hours * 0.25)
+          }));
+          setSubjects(formattedSubjects);
+        } else {
+          console.error('Unexpected data format for subjects:', data);
+        }
       } catch (error) {
         console.error('Error fetching subjects:', error);
       }
     };
 
     fetchSubjects();
-  }, [selectedSemester]);
+  }, [selectedSemester, selectedDepartment]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -61,6 +97,19 @@ const AttendanceScreen = () => {
             <Picker.Item label="Semester 6" value="6" />
             <Picker.Item label="Semester 7" value="7" />
             <Picker.Item label="Semester 8" value="8" />
+          </Picker>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+          <Text style={{ marginRight: 8 }}>Department:</Text>
+          <Picker
+            selectedValue={selectedDepartment}
+            style={{ height: 60, width: 200, fontWeight: 'bold' }}
+            onValueChange={(itemValue) => setSelectedDepartment(itemValue)}
+          >
+            {departments.map((department, index) => (
+              <Picker.Item key={index} label={department} value={department} />
+            ))}
           </Picker>
         </View>
 
