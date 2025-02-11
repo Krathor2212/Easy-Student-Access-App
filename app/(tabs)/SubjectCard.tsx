@@ -6,6 +6,7 @@ interface SubjectCardProps {
   unattendedClasses: number;
   attendancePercent: number;
   absenceLimit: number;
+  total_hrs: number;
 }
 
 const TOTAL_HOURS = 45;
@@ -15,16 +16,17 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
   unattendedClasses,
   attendancePercent,
   absenceLimit,
+  total_hrs,
 }) => {
   const [unattended, setUnattended] = useState(unattendedClasses);
   const [attendance, setAttendance] = useState(attendancePercent);
   const [limit, setLimit] = useState(absenceLimit);
 
   const handleIncrease = () => {
-    if (unattended < TOTAL_HOURS) {
+    if (unattended < total_hrs) {
       const newUnattended = unattended + 1;
       setUnattended(newUnattended);
-      setAttendance(((TOTAL_HOURS - newUnattended) / TOTAL_HOURS) * 100);
+      setAttendance(((total_hrs - newUnattended) / total_hrs) * 100);
       setLimit(limit - 1);
     } 
   };
@@ -33,7 +35,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
     if (unattended > 0) {
       const newUnattended = unattended - 1;
       setUnattended(newUnattended);
-      setAttendance(((TOTAL_HOURS - newUnattended) / TOTAL_HOURS) * 100);
+      setAttendance(((total_hrs - newUnattended) / total_hrs) * 100);
       setLimit(limit + 1);
     }
   };

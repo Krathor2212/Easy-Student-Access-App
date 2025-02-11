@@ -1,41 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import SubjectCard from './SubjectCard';
 
 const AttendanceScreen = () => {
   const [selectedSemester, setSelectedSemester] = useState('1');
+  interface Subject {
+    id: number;
+    name: string;
+    unattendedClasses: number;
+    attendancePercent: number;
+    absenceLimit: number;
+    total_hrs: number;
+  }
 
-  const subjects = [
-    {
-      id: 1,
-      name: 'Subject 1',
-      unattendedClasses: 0,
-      attendancePercent: 100,
-      absenceLimit: 11
-    },
-    {
-      id: 2,
-      name: 'Subject 2',
-      unattendedClasses: 0,
-      attendancePercent: 100,
-      absenceLimit: 11
-    },
-    {
-      id: 3,
-      name: 'Subject 3',
-      unattendedClasses: 0,
-      attendancePercent: 100,
-      absenceLimit: 11
-    },
-    {
-      id: 4,
-      name: 'Subject 4',
-      unattendedClasses: 0,
-      attendancePercent: 100,
-      absenceLimit: 11
-    }
-  ];
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await fetch(`http://10.16.49.151:5000/subjects?sem_offered=${selectedSemester}`);
+        const data = await response.json();
+        const formattedSubjects = data.map((subject: any, index: number) => ({
+          id: index + 1,
+          name: subject.subject_name,
+          unattendedClasses: 0,
+          attendancePercent: 100,
+          total_hrs: subject.no_of_hours,
+          absenceLimit: Math.floor(subject.no_of_hours * 0.25)
+        }));
+        setSubjects(formattedSubjects);
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      }
+    };
+
+    fetchSubjects();
+  }, [selectedSemester]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -47,11 +48,11 @@ const AttendanceScreen = () => {
             }}
             style={{ width: 24, height: 24, marginRight: 8 }}
           />
-            <Picker
+          <Picker
             selectedValue={selectedSemester}
-            style={{ height: 60, width: 200 }}
+            style={{ height: 60, width: 200, fontWeight: 'bold' }}
             onValueChange={(itemValue) => setSelectedSemester(itemValue)}
-            >
+          >
             <Picker.Item label="Semester 1" value="1" />
             <Picker.Item label="Semester 2" value="2" />
             <Picker.Item label="Semester 3" value="3" />
@@ -60,9 +61,9 @@ const AttendanceScreen = () => {
             <Picker.Item label="Semester 6" value="6" />
             <Picker.Item label="Semester 7" value="7" />
             <Picker.Item label="Semester 8" value="8" />
-            </Picker>
+          </Picker>
         </View>
-        
+
         <View style={{ gap: 16 }}>
           {subjects.map(subject => (
             <SubjectCard key={subject.id} {...subject} />
