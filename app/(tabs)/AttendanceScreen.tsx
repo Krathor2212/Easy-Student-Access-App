@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -67,44 +67,71 @@ const AttendanceScreen = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={{ padding: 16 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-          <Picker
-            selectedValue={selectedSemester}
-            style={{ height: 60, width: 200, fontWeight: 'bold' }}
-            onValueChange={(itemValue) => setSelectedSemester(itemValue)}
-          >
-            {Array.from({ length: 8 }, (_, i) => (
-              <Picker.Item key={i} label={`Semester ${i + 1}`} value={`${i + 1}`} />
-            ))}
-          </Picker>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-          <Text>Department:</Text>
-          <Picker
-            selectedValue={selectedDepartment}
-            style={{ height: 60, width: 200, fontWeight: 'bold' }}
-            onValueChange={(itemValue) => {
-              console.log('Selected department:', itemValue);
-              handleDepartmentChange(itemValue);
-            }}
-          >
-            {data.departments.map((department, index) => (
-              <Picker.Item key={index} label={department} value={department} />
-            ))}
-          </Picker>
-        </View>
-
-        <View style={{ gap: 16 }}>
-          {subjects.map(subject => (
-            <SubjectCard key={subject.id} {...subject} />
+    <ScrollView style={styles.container}>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedSemester}
+          style={styles.picker}
+          onValueChange={(itemValue) => setSelectedSemester(itemValue)}
+        >
+          {Array.from({ length: 8 }, (_, i) => (
+            <Picker.Item key={i} label={`Semester ${i + 1}`} value={`${i + 1}`} />
           ))}
-        </View>
+        </Picker>
+      </View>
+
+      <View style={styles.pickerContainer}>
+        <Text style={styles.label}>Department:</Text>
+        <Picker
+          selectedValue={selectedDepartment}
+          style={styles.picker}
+          onValueChange={(itemValue) => {
+            console.log('Selected department:', itemValue);
+            handleDepartmentChange(itemValue);
+          }}
+        >
+          {data.departments.map((department, index) => (
+            <Picker.Item key={index} label={department} value={department} />
+          ))}
+        </Picker>
+      </View>
+
+      <View style={styles.subjectsContainer}>
+        {subjects.map(subject => (
+          <SubjectCard key={subject.id} {...subject} />
+        ))}
       </View>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  pickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  picker: {
+    flex: 1,
+    height: 60,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    elevation: 2,
+    marginTop: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+  subjectsContainer: {
+    paddingHorizontal: 16,
+  },
+});
 
 export default AttendanceScreen;
