@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SubjectCardProps {
   name: string;
@@ -9,8 +10,6 @@ interface SubjectCardProps {
   total_hrs: number;
 }
 
-const TOTAL_HOURS = 45;
-
 const SubjectCard: React.FC<SubjectCardProps> = ({
   name,
   unattendedClasses,
@@ -18,25 +17,72 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
   absenceLimit,
   total_hrs,
 }) => {
-  const [unattended, setUnattended] = useState(unattendedClasses);
-  const [attendance, setAttendance] = useState(attendancePercent);
-  const [limit, setLimit] = useState(absenceLimit);
+  const [unattended, setUnattended] = useState(unattendedClasses || 0);
+  const [attendance, setAttendance] = useState(attendancePercent || 100);
+  const [limit, setLimit] = useState(absenceLimit || Math.floor(total_hrs * 0.25));
+
+  useEffect(() => {
+    if (!name) {
+      console.error('The name prop is undefined or empty.');
+      return;
+    }
+
+    const loadAttendanceData = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem(name);
+        if (storedData) {
+          const { unattended, attendance, limit } = JSON.parse(storedData);
+          setUnattended(unattended);
+          setAttendance(attendance);
+          setLimit(limit);
+        }
+      } catch (error) {
+        console.error('Error loading attendance data:', error);
+      }
+    };
+
+    loadAttendanceData();
+  }, [name]);
+
+  const saveAttendanceData = async (newUnattended: number, newAttendance: number, newLimit: number) => {
+    if (!name) {
+      console.error('The name prop is undefined or empty.');
+      return;
+    }
+
+    try {
+      const data = {
+        unattended: newUnattended,
+        attendance: newAttendance,
+        limit: newLimit,
+      };
+      await AsyncStorage.setItem(name, JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving attendance data:', error);
+    }
+  };
 
   const handleIncrease = () => {
     if (unattended < total_hrs) {
       const newUnattended = unattended + 1;
+      const newAttendance = ((total_hrs - newUnattended) / total_hrs) * 100;
+      const newLimit = limit - 1;
       setUnattended(newUnattended);
-      setAttendance(((total_hrs - newUnattended) / total_hrs) * 100);
-      setLimit(limit - 1);
-    } 
+      setAttendance(newAttendance);
+      setLimit(newLimit);
+      saveAttendanceData(newUnattended, newAttendance, newLimit);
+    }
   };
 
   const handleDecrease = () => {
     if (unattended > 0) {
       const newUnattended = unattended - 1;
+      const newAttendance = ((total_hrs - newUnattended) / total_hrs) * 100;
+      const newLimit = limit + 1;
       setUnattended(newUnattended);
-      setAttendance(((total_hrs - newUnattended) / total_hrs) * 100);
-      setLimit(limit + 1);
+      setAttendance(newAttendance);
+      setLimit(newLimit);
+      saveAttendanceData(newUnattended, newAttendance, newLimit);
     }
   };
 
@@ -46,7 +92,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
         <View style={styles.textContainer}>
           <Text style={styles.subjectName}>{name}</Text>
           <Text style={styles.infoText}>Classes Missed: {unattended}</Text>
-          <Text style={styles.infoText}>Attendance : {attendance.toFixed(2)}%</Text>
+          <Text style={styles.infoText}>Attendance : {attendance !== null ? attendance.toFixed(2) : 'N/A'}%</Text>
           <Text style={styles.infoText}>Skips Left: {limit}</Text>
         </View>
         <View style={styles.symbolContainer}>
@@ -84,7 +130,7 @@ const styles = {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
-    gap: 30, // Increased gap value
+    gap: 50, // Increased gap value
   },
   subjectName: {
     fontSize: 18,
@@ -97,7 +143,7 @@ const styles = {
     marginBottom: 4,
   },
   symbolText: {
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: 'bold' as const,
   },
 };

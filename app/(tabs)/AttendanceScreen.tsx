@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SubjectCard from './SubjectCard';
 import data from '../../assets/data.json'; // Adjust the path as needed
 
 const AttendanceScreen = () => {
+  const route = useRoute();
+  const initialDepartment = (route.params as { department?: string })?.department || data.departments[0];
   const [selectedSemester, setSelectedSemester] = useState('1');
-  const [selectedDepartment, setSelectedDepartment] = useState(data.departments[0]);
-  
+  const [selectedDepartment, setSelectedDepartment] = useState(initialDepartment);
+
   interface Subject {
     id: number;
     name: string;
@@ -20,14 +24,29 @@ const AttendanceScreen = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
   useEffect(() => {
+    const loadSelectedDepartment = async () => {
+      try {
+        const storedDepartment = await AsyncStorage.getItem('selectedDepartment');
+        if (storedDepartment) {
+          setSelectedDepartment(storedDepartment);
+        }
+      } catch (error) {
+        console.error('Error loading selected department:', error);
+      }
+    };
+
+    loadSelectedDepartment();
+  }, []);
+
+  useEffect(() => {
     if (!selectedSemester || !selectedDepartment) {
       console.log('Selected semester or department is missing:', { selectedSemester, selectedDepartment });
       return;
     }
 
     const departmentSubjects = data.subjects[selectedDepartment] || [];
-    const filteredSubjects = departmentSubjects.filter(subject => subject.sem_offered === selectedSemester);
-    const formattedSubjects = filteredSubjects.map((subject, index) => ({
+    const filteredSubjects = departmentSubjects.filter((subject: any) => subject.sem_offered === selectedSemester);
+    const formattedSubjects = filteredSubjects.map((subject: any, index: number) => ({
       id: index + 1,
       name: subject.subject_name,
       unattendedClasses: 0,
@@ -38,14 +57,19 @@ const AttendanceScreen = () => {
     setSubjects(formattedSubjects);
   }, [selectedSemester, selectedDepartment]);
 
+  const handleDepartmentChange = async (itemValue: string) => {
+    try {
+      await AsyncStorage.setItem('selectedDepartment', itemValue);
+      setSelectedDepartment(itemValue);
+    } catch (error) {
+      console.error('Error saving selected department:', error);
+    }
+  };
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ padding: 16 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-          <Image
-            source={{ uri: 'https://cdn.builder.io/api/v1/image/assets/7ded4c0eea1b48fba2dba42fb46975e4/9a90d5e38755e56174e9f8e2c32d289d9fe1d770b97bd6fd46adff01fe3b45e8' }}
-            style={{ width: 24, height: 24, marginRight: 8 }}
-          />
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
           <Picker
             selectedValue={selectedSemester}
             style={{ height: 60, width: 200, fontWeight: 'bold' }}
@@ -58,13 +82,13 @@ const AttendanceScreen = () => {
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-          <Text style={{ marginRight: 8 }}>Department:</Text>
+          <Text>Department:</Text>
           <Picker
             selectedValue={selectedDepartment}
             style={{ height: 60, width: 200, fontWeight: 'bold' }}
             onValueChange={(itemValue) => {
               console.log('Selected department:', itemValue);
-              setSelectedDepartment(itemValue);
+              handleDepartmentChange(itemValue);
             }}
           >
             {data.departments.map((department, index) => (
