@@ -332,7 +332,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Electives \u00e2\u20ac\u201c Humanities II ",
+                "subject_name": "Electives  Humanities II ",
                 "subject_code": "HSMC1",
                 "credits": 3,
                 "sem_offered": "6",
@@ -360,7 +360,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Electives \u00e2\u20ac\u201c Humanities I ",
+                "subject_name": "Electives  Humanities I ",
                 "subject_code": "HSMC2",
                 "credits": 3,
                 "sem_offered": "7",
@@ -579,7 +579,7 @@
                 "no_of_hours": 60
             },
             {
-                "subject_name": "Elective \u00e2\u20ac\u201c Humanities II ",
+                "subject_name": "Elective  Humanities II ",
                 "subject_code": "HSMC2",
                 "credits": 3,
                 "sem_offered": "4",
@@ -670,7 +670,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Electrical Machines Laboratory \u00e2\u20ac\u201c II ",
+                "subject_name": "Electrical Machines Laboratory  II ",
                 "subject_code": "EE5511",
                 "credits": 2,
                 "sem_offered": "5",
@@ -1050,7 +1050,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Professional Elective \u00e2\u20ac\u201c I",
+                "subject_name": "Professional Elective  I",
                 "subject_code": "PEC1",
                 "credits": 3,
                 "sem_offered": "5",
@@ -1099,21 +1099,21 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Professional Elective\u00e2\u20ac\u201c II",
+                "subject_name": "Professional Elective II",
                 "subject_code": "PEC2",
                 "credits": 3,
                 "sem_offered": "6",
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Professional Elective \u00e2\u20ac\u201c III",
+                "subject_name": "Professional Elective  III",
                 "subject_code": "PEC3",
                 "credits": 3,
                 "sem_offered": "6",
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Open Elective\u00e2\u20ac\u201c I",
+                "subject_name": "Open Elective I",
                 "subject_code": "OEC1",
                 "credits": 3,
                 "sem_offered": "6",
@@ -1162,14 +1162,14 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Professional Elective\u00e2\u20ac\u201c IV",
+                "subject_name": "Professional Elective IV",
                 "subject_code": "PEC4",
                 "credits": 3,
                 "sem_offered": "7",
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Open Elective\u00e2\u20ac\u201c II",
+                "subject_name": "Open Elective II",
                 "subject_code": "OEC2",
                 "credits": 3,
                 "sem_offered": "7",
@@ -1190,14 +1190,14 @@
                 "no_of_hours": 90
             },
             {
-                "subject_name": "Professional Elective\u00e2\u20ac\u201cV",
+                "subject_name": "Professional ElectiveV",
                 "subject_code": "PEC5",
                 "credits": 3,
                 "sem_offered": "8",
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Professional Elective\u00e2\u20ac\u201c VI",
+                "subject_name": "Professional Elective VI",
                 "subject_code": "PEC6",
                 "credits": 3,
                 "sem_offered": "8",
@@ -1211,14 +1211,14 @@
                 "no_of_hours": 240
             },
             {
-                "subject_name": "Elective \u00e2\u20ac\u201c Humanities I",
+                "subject_name": "Elective  Humanities I",
                 "subject_code": "HSMC1",
                 "credits": 3,
                 "sem_offered": "3",
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Elective \u00e2\u20ac\u201c Humanities II",
+                "subject_name": "Elective  Humanities II",
                 "subject_code": "HSMC2",
                 "credits": 3,
                 "sem_offered": "4",
@@ -1231,21 +1231,21 @@
                 "subject_code": "HS6151",
                 "credits": 5,
                 "sem_offered": "1",
-                "no_of_hours": null
+                "no_of_hours": 60
             },
             {
                 "subject_name": "Engineering Physics",
                 "subject_code": "PH6151",
                 "credits": 5,
                 "sem_offered": "1",
-                "no_of_hours": null
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Mathematics I ",
                 "subject_code": "MA6151",
                 "credits": 5,
                 "sem_offered": "1",
-                "no_of_hours": null
+                "no_of_hours": 
             },
             {
                 "subject_name": "Programming with C ",
@@ -9907,7 +9907,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Electives \u00e2\u20ac\u201c Humanities I",
+                "subject_name": "Electives  Humanities I",
                 "subject_code": "HSMC1",
                 "credits": 3,
                 "sem_offered": "3",
@@ -9963,7 +9963,7 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Electives \u00e2\u20ac\u201c Humanities II",
+                "subject_name": "Electives  Humanities II",
                 "subject_code": "HSMC2",
                 "credits": 3,
                 "sem_offered": "4",
