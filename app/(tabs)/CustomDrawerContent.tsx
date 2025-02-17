@@ -3,7 +3,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WipeData = (props) => {
+const CustomDrawerContent = (props) => {
   const clearLocalStorage = async () => {
     try {
       await AsyncStorage.clear();
@@ -17,7 +17,7 @@ const WipeData = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <View style={styles.buttonContainer}>
-        <Button title="Wipe Data" onPress={clearLocalStorage} />
+        <Button title="Clear Local Storage" onPress={clearLocalStorage} />
       </View>
     </DrawerContentScrollView>
   );
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WipeData;
+export default CustomDrawerContent;
