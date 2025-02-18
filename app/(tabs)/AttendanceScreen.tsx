@@ -86,7 +86,6 @@ const AttendanceScreen = () => {
           selectedValue={selectedDepartment}
           style={styles.picker}
           onValueChange={(itemValue) => {
-            console.log('Selected department:', itemValue);
             handleDepartmentChange(itemValue);
           }}
         >

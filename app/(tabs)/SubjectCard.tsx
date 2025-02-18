@@ -35,7 +35,6 @@ const SubjectCard: React.FC<SubjectCardProps> = ({
           setUnattended(unattended);
           setAttendance(attendance);
           setLimit(limit);
-          console.log(`Loaded attendance data for ${name}:`, { unattended, attendance, limit, total_hrs });
         } else {
           // Set the initial limit if not already stored
           const initialLimit = Math.floor(total_hrs * 0.25);
