@@ -3,7 +3,6 @@
         "ECE",
         "EEE",
         "Mech",
-        "DCSE",
         "Manufacturing",
         "MatSc",
         "Civil",
@@ -1225,183 +1224,6 @@
                 "no_of_hours": 45
             }
         ],
-        "DCSE": [
-            {
-                "subject_name": "Technical English I",
-                "subject_code": "HS6151",
-                "credits": 5,
-                "sem_offered": "1",
-                "no_of_hours": 60
-            },
-            {
-                "subject_name": "Engineering Physics",
-                "subject_code": "PH6151",
-                "credits": 5,
-                "sem_offered": "1",
-                "no_of_hours": 45
-            },
-            {
-                "subject_name": "Mathematics I ",
-                "subject_code": "MA6151",
-                "credits": 5,
-                "sem_offered": "1",
-                "no_of_hours": 45
-            },
-            {
-                "subject_name": "Programming with C ",
-                "subject_code": "CS6101",
-                "credits": 6,
-                "sem_offered": "1",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Computational Thinking ",
-                "subject_code": "CS6102",
-                "credits": 3,
-                "sem_offered": "1",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Technical English II ",
-                "subject_code": "HS6251",
-                "credits": 5,
-                "sem_offered": "2",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Engineering Chemistry",
-                "subject_code": "CY6251",
-                "credits": 5,
-                "sem_offered": "2",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Discrete Mathematics",
-                "subject_code": "MA6251",
-                "credits": 5,
-                "sem_offered": "2",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Engineering Graphics",
-                "subject_code": "GE6251",
-                "credits": 5,
-                "sem_offered": "2",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Application Development Practices",
-                "subject_code": "CS6103",
-                "credits": 4,
-                "sem_offered": "2",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Data Structures and Algorithms",
-                "subject_code": "CS6104",
-                "credits": 7,
-                "sem_offered": "3",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Digital  and Computer Organization",
-                "subject_code": "CS6105",
-                "credits": 7,
-                "sem_offered": "3",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Probability and Statistics",
-                "subject_code": "MA6351",
-                "credits": 5,
-                "sem_offered": "3",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Basics of Electrical and Electronics ",
-                "subject_code": "EE6351",
-                "credits": 7,
-                "sem_offered": "3",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Open Elective I",
-                "subject_code": "OEC1",
-                "credits": 3,
-                "sem_offered": "3",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Database Management Systems",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Computer Architecture",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "Operating Systems",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            },
-            {
-                "subject_name": "NULL",
-                "subject_code": "NULL",
-                "credits": null,
-                "sem_offered": "NULL",
-                "no_of_hours": null
-            }
-        ],
         "Manufacturing": [
             {
                 "subject_name": "Technical English",
@@ -2348,7 +2170,7 @@
             {
                 "subject_name": "Construction Materials",
                 "subject_code": "Techniques and Practices",
-                "credits": null,
+                "credits": 3,
                 "sem_offered": "3",
                 "no_of_hours": 3
             },
@@ -2367,11 +2189,11 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "replace('Strength of Materials \\nLaboratory",
-                "subject_code": "\\n",
-                "credits": null,
-                "sem_offered": "CE5311",
-                "no_of_hours": 2
+                "subject_name": "Strength of Materials Laboratory",
+                "subject_code": "CE5311",
+                "credits": 2,
+                "sem_offered": "3",
+                "no_of_hours": 60
             },
             {
                 "subject_name": "Construction Materials Laboratory",
@@ -2500,11 +2322,11 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Railways",
-                "subject_code": "Airports and Harbour Engineering",
-                "credits": null,
-                "sem_offered": "3",
-                "no_of_hours": 6
+                "subject_name": "Railways, Airports and Harbour Engineering",
+                "subject_code": "CE5602",
+                "credits": 3,
+                "sem_offered": "6",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Audit Course II*",
@@ -2612,11 +2434,11 @@
                 "no_of_hours": 90
             },
             {
-                "subject_name": "Estimation",
-                "subject_code": "Costing and Valuation Engineering",
-                "credits": null,
-                "sem_offered": "3",
-                "no_of_hours": 8
+                "subject_name": "Estimation, Costing and Valuation Engineering",
+                "subject_code": "CE5801",
+                "credits": 3,
+                "sem_offered": "8",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Professional Elective VI",
@@ -6277,11 +6099,11 @@
                 "no_of_hours": 60
             },
             {
-                "subject_name": "Power Electronics",
-                "subject_code": "Drives and Control",
-                "credits": null,
-                "sem_offered": "3",
-                "no_of_hours": 6
+                "subject_name": "Power Electronics, Drives and Control",
+                "subject_code": "EI5601",
+                "credits": 3,
+                "sem_offered": "6",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Industrial Instrumentation - II",
@@ -6347,11 +6169,11 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "Introduction to Industrial Processes",
-                "subject_code": "Measurement and Control",
-                "credits": null,
-                "sem_offered": "3",
-                "no_of_hours": 7
+                "subject_name": "Introduction to Industrial Processes, Measurement and Control",
+                "subject_code": "EI5701",
+                "credits": 3,
+                "sem_offered": "7",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Professional Elective - IV",
@@ -6748,18 +6570,18 @@
                 "no_of_hours": 60
             },
             {
-                "subject_name": "Cereal",
-                "subject_code": "Pulses and Oil Seed Technology Laboratory",
-                "credits": null,
-                "sem_offered": "2",
-                "no_of_hours": 6
+                "subject_name": "Cereal, Pulses and Oil Seed Technology Laboratory",
+                "subject_code": "FT5612",
+                "credits": 2,
+                "sem_offered": "6",
+                "no_of_hours": 60
             },
             {
-                "subject_name": "Food Safety",
-                "subject_code": "Quality and Regulation",
-                "credits": null,
-                "sem_offered": "3",
-                "no_of_hours": 7
+                "subject_name": "Food Safety, Quality and Regulation",
+                "subject_code": "FT5701",
+                "credits": 3,
+                "sem_offered": "7",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Dairy Process Technology",
@@ -8310,11 +8132,11 @@
                 "no_of_hours": 45
             },
             {
-                "subject_name": "replace('Cell and Molecular \\nBiology",
-                "subject_code": "\\n",
-                "credits": null,
-                "sem_offered": "PM5401",
-                "no_of_hours": 3
+                "subject_name": "Cell and Molecular Biology",
+                "subject_code": "PM5401",
+                "credits": 3,
+                "sem_offered": "4",
+                "no_of_hours": 45
             },
             {
                 "subject_name": "Probability and Statistics",
@@ -9154,11 +8976,11 @@
                 "no_of_hours": 60
             },
             {
-                "subject_name": "Foundry",
-                "subject_code": "Welding and Metallurgy Laboratory",
-                "credits": null,
-                "sem_offered": "2",
-                "no_of_hours": 4
+                "subject_name": "Foundry,Welding and Metallurgy Laboratory",
+                "subject_code": "PR5412",
+                "credits": 2,
+                "sem_offered": "4",
+                "no_of_hours": 60
             },
             {
                 "subject_name": "Statistics for Production Management",
