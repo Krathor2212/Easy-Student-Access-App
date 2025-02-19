@@ -3,15 +3,16 @@ import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Alert } from 'rea
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-// Assuming data.json contains dynamic subjects data
-import data from '../../assets/data.json';  // Your dynamic data source
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import data from '../../assets/data.json'; 
+import * as DocumentPicker from 'expo-document-picker';
 
 const CGPACalculator = () => {
-  const [semesters, setSemesters] = useState({ '1': { courses: [], gpa: 0 } });
+  const [semesters, setSemesters] = useState<{ [key: string]: { courses: { id: number; name: string; code: string; credits: number; grade: string; }[]; gpa: number; } }>({ '1': { courses: [], gpa: 0 } });
   const [currentSemester, setCurrentSemester] = useState('1');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [subjects, setSubjects] = useState([]);
+  const [subjects, setSubjects] = useState<{ subject_code: string; subject_name: string; credits: number; sem_offered: string; }[]>([]);
   const [overallCGPA, setOverallCGPA] = useState(0);
 
   useEffect(() => {
@@ -96,6 +97,14 @@ const CGPACalculator = () => {
       return;
     }
 
+    // Ensure the current semester is initialized
+    if (!semesters[currentSemester]) {
+      setSemesters((prev) => ({
+        ...prev,
+        [currentSemester]: { courses: [], gpa: 0 }
+      }));
+    }
+
     // Get all selected courses across all semesters
     const allSelectedCourses = Object.values(semesters).flatMap((sem) =>
       sem.courses.map((course) => course.name)
@@ -125,7 +134,7 @@ const CGPACalculator = () => {
     });
   };
 
-  const deleteCourse = (id) => {
+  const deleteCourse = (id: number) => {
     setSemesters((prev) => {
       const updatedSemesters = { ...prev };
       updatedSemesters[currentSemester].courses = updatedSemesters[currentSemester].courses.filter(
@@ -202,10 +211,8 @@ const CGPACalculator = () => {
       case 'A': return 8;
       case 'B+': return 7;
       case 'B': return 6;
-      case 'C+': return 5;
-      case 'C': return 4;
-      case 'D': return 3;
-      case 'F': return 0;
+      case 'C': return 5;
+      case 'U': return 0;
       default: return 0;
     }
   };
@@ -220,6 +227,55 @@ const CGPACalculator = () => {
       Alert.alert('Success', 'All data has been reset.');
     } catch (error) {
       console.error('Failed to reset data:', error);
+    }
+  };
+
+  const backupData = async () => {
+    try {
+      const backup = {
+        semesters,
+        currentSemester,
+        selectedDepartment,
+        overallCGPA,
+      };
+
+      const backupString = JSON.stringify(backup, null, 2);
+      const fileUri = FileSystem.documentDirectory + 'cgpa_backup.json';
+
+      await FileSystem.writeAsStringAsync(fileUri, backupString);
+      await Sharing.shareAsync(fileUri, {
+        mimeType: 'application/json',
+        dialogTitle: 'Backup CGPA Data',
+        UTI: 'public.json',
+      });
+
+      Alert.alert('Success', 'Backup created and shared successfully.');
+    } catch (error) {
+      console.error('Failed to backup data:', error);
+      Alert.alert('Error', 'Failed to create backup.');
+    }
+  };
+
+  const restoreData = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/json',
+      });
+
+      if (result.type === 'success') {
+        const backupString = await FileSystem.readAsStringAsync(result.uri);
+        const backup = JSON.parse(backupString);
+
+        setSemesters(backup.semesters);
+        setCurrentSemester(backup.currentSemester);
+        setSelectedDepartment(backup.selectedDepartment);
+        setOverallCGPA(backup.overallCGPA);
+
+        Alert.alert('Success', 'Data restored successfully.');
+      }
+    } catch (error) {
+      console.error('Failed to restore data:', error);
+      Alert.alert('Error', 'Failed to restore data.');
     }
   };
 
@@ -252,7 +308,16 @@ const CGPACalculator = () => {
         <Text style={styles.label}>Select Semester:</Text>
         <Picker
           selectedValue={currentSemester}
-          onValueChange={(value) => setCurrentSemester(value)}
+          onValueChange={(value) => {
+            // Ensure the selected semester is initialized
+            if (!semesters[value]) {
+              setSemesters((prev) => ({
+                ...prev,
+                [value]: { courses: [], gpa: 0 }
+              }));
+            }
+            setCurrentSemester(value);
+          }}
           style={styles.picker}
         >
           {Array.from({ length: 8 }, (_, i) => i + 1).map((sem) => (
@@ -262,28 +327,30 @@ const CGPACalculator = () => {
       </View>
 
       {/* Course List */}
-      {semesters[currentSemester].courses.map((course) => (
+      {semesters[currentSemester] && semesters[currentSemester].courses.map((course) => (
         <View key={course.id} style={styles.courseCard}>
-          <Picker
-            selectedValue={course.name}
-            onValueChange={(value) => updateCourse(course.id, 'name', value)}
-            style={styles.input}
-          >
-            {subjects.map((subject) => (
-              <Picker.Item key={subject.subject_code} label={subject.subject_name} value={subject.subject_name} />
-            ))}
-          </Picker>
-          <Text style={styles.creditsText}>Credits: {course.credits}</Text>
-          <Picker
-            selectedValue={course.grade}
-            onValueChange={(value) => updateCourse(course.id, 'grade', value)}
-            style={styles.input}
-          >
-            {['O', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'].map((grade) => (
-              <Picker.Item key={grade} label={grade} value={grade} />
-            ))}
-          </Picker>
-          <TouchableOpacity onPress={() => deleteCourse(course.id)}>
+          <View style={styles.courseDetails}>
+            <Picker
+              selectedValue={course.name}
+              onValueChange={(value) => updateCourse(course.id, 'name', value)}
+              style={styles.input}
+            >
+              {subjects.map((subject) => (
+                <Picker.Item key={subject.subject_code} label={subject.subject_name} value={subject.subject_name} />
+              ))}
+            </Picker>
+            <Text style={styles.creditsText}>Credits: {course.credits}</Text>
+            <Picker
+              selectedValue={course.grade}
+              onValueChange={(value) => updateCourse(course.id, 'grade', value)}
+              style={styles.input}
+            >
+              {['O', 'A+', 'A', 'B+', 'B', 'C', 'U'].map((grade) => (
+                <Picker.Item key={grade} label={grade} value={grade} />
+              ))}
+            </Picker>
+          </View>
+          <TouchableOpacity onPress={() => deleteCourse(course.id)} style={styles.deleteIcon}>
             <Icon name="delete" size={30} color="red" />
           </TouchableOpacity>
         </View>
@@ -318,6 +385,16 @@ const CGPACalculator = () => {
       <TouchableOpacity onPress={resetAllData} style={styles.button}>
         <Text style={styles.buttonText}>Reset All Data</Text>
       </TouchableOpacity>
+
+      {/* Backup Data */}
+      <TouchableOpacity onPress={backupData} style={styles.button}>
+        <Text style={styles.buttonText}>Backup Data</Text>
+      </TouchableOpacity>
+
+      {/* Restore Data */}
+      <TouchableOpacity onPress={restoreData} style={styles.button}>
+        <Text style={styles.buttonText}>Restore Data</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -326,6 +403,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f8f9fa',
   },
   pickerContainer: {
     marginBottom: 20,
@@ -337,23 +415,37 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
   courseCard: {
-    backgroundColor: '#f1f1f1',
-    padding: 10,
+    backgroundColor: '#ffffff',
+    padding: 15,
     marginVertical: 10,
-    borderRadius: 5,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  courseDetails: {
+    flex: 1,
   },
   creditsText: {
     marginBottom: 10,
     fontSize: 16,
+    fontWeight: 'bold',
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
+    paddingHorizontal: 10,
   },
   button: {
     backgroundColor: '#007bff',
@@ -377,6 +469,9 @@ const styles = StyleSheet.create({
   addRemoveContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  deleteIcon: {
+    marginLeft: 10,
   },
 });
 
