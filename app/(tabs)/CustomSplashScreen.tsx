@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
+
 const CustomSplashScreen = () => {
   const lineAnimation = useSharedValue(0);
 
